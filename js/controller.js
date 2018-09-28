@@ -19,7 +19,7 @@ export default class Controller {
 	 */
 	render(context) {
 		context.beginPath();
-		context.fillStyle = 'black';
+		context.strokeStyle = 'black';
 		const numSquares = 16;
 		const size = this.size;
 		for (let iy = 0; iy < numSquares; iy ++) {
@@ -29,9 +29,9 @@ export default class Controller {
 				const minX = slurp(-size, size, ix / numSquares);
 				const maxX = slurp(-size, size, (ix + 1) / numSquares);
 
-				if ((ix + iy) % 2 == 0) {
-					continue;
-				}
+				// if ((ix + iy) % 2 == 0) {
+				// 	continue;
+				// }
 
 				this.adjustedPath(context, [
 					{x: minX, y: minY},
@@ -41,7 +41,7 @@ export default class Controller {
 				]);
 			}
 		}
-		context.fill();
+		context.stroke();
 	}
 
 	adjustedPath(context, points, numPoints = 5) {
