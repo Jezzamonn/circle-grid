@@ -33,26 +33,30 @@ export default class Controller {
 					continue;
 				}
 
-				this.adjustedLine(context, {x: minX, y: minY}, {x: maxX, y: minY});
-				this.adjustedLine(context, {x: maxX, y: minY}, {x: maxX, y: maxY});
-				this.adjustedLine(context, {x: maxX, y: maxY}, {x: minX, y: maxY});
-				this.adjustedLine(context, {x: minX, y: maxY}, {x: minX, y: minY});
+				this.adjustedPath(context, [
+					{x: minX, y: minY},
+					{x: maxX, y: minY},
+					{x: maxX, y: maxY},
+					{x: minX, y: maxY},
+				]);
 			}
 		}
-		context.fill('evenodd');
+		context.fill();
 	}
 
+	adjustedPath(context, points, numPoints = 5) {
+		this.adjustedMoveTo(context, points[0].x, points[0].y);
+		for (let i = 0; i < points.length; i ++) {
+			const nextI = (i + 1) % points.length;
+			this.adjustedLine(context, points[i], points[nextI], numPoints)
+		}
+	}
 	adjustedLine(context, start, end, numPoints = 5) {
-		for (let i = 0; i <= numPoints; i ++) {
+		for (let i = 1; i <= numPoints; i ++) {
 			const amt = i / numPoints;
 			const x = slurp(start.x, end.x, amt);
 			const y = slurp(start.y, end.y, amt);
-			if (i == 0) {
-				this.adjustedMoveTo(context, x, y);
-			}
-			else {
-				this.adjustedLineTo(context, x, y);
-			}
+			this.adjustedLineTo(context, x, y);
 		}
 	}
 
