@@ -20,7 +20,8 @@ export default class Controller {
 	render(context) {
 		context.beginPath();
 		const numSquares = 8;
-		const size = 200;
+		const size = this.size;
+		const linePoints = 5;
 		for (let iy = 0; iy < numSquares; iy ++) {
 			const minY = slurp(-size, size, iy / numSquares);
 			const maxY = slurp(-size, size, (iy + 1) / numSquares);
@@ -33,7 +34,10 @@ export default class Controller {
 				}
 
 				this.adjustedMoveTo(context, minY, minX);
-				this.adjustedLineTo(context, minY, maxX);
+				for (let i = 0; i < linePoints; i ++) {
+					const lineAmt = i / linePoints;
+					// this.adjustedLineTo(context, minY, slurp(minX, maxX, lineAmt);
+				}
 				this.adjustedLineTo(context, maxY, maxX);
 				this.adjustedLineTo(context, maxY, minX);
 				this.adjustedLineTo(context, minY, minX);
@@ -41,6 +45,14 @@ export default class Controller {
 		}
 		context.fillStyle = 'black';
 		context.fill('evenodd');
+	}
+
+	adjustedLine(context, start, end, numPoints) {
+		for (let i = 0; i <= linePoints; i ++) {
+			const amt = i / linePoints;
+			// line = 
+			this.adjustedLineTo(context, maxY, maxX);
+		}
 	}
 
 	adjustedMoveTo(context, x, y) {
