@@ -83,10 +83,11 @@ export default class Controller {
 			normalisingFactor = Math.abs(Math.sin(theta));
 		}
 		// Just normalise here
-		r *= normalisingFactor;
+		const someAmt = Math.sin(2 * Math.PI * this.animAmt);
+		r *= slurp(normalisingFactor, 1, someAmt);
 		let rAmt = r / this.size;
-		let spinAmt = slurp(-1, 1, rAmt) * easeInOut(this.animAmt);
-		let spinAngle = 4 * Math.PI * spinAmt;
+		let spinAmt = slurp(-1, 1, rAmt) * someAmt;
+		let spinAngle = spinAmt;
 	
 		return {
 			x: r * Math.cos(theta + spinAngle),
