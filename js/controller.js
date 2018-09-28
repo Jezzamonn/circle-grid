@@ -7,11 +7,14 @@ export default class Controller {
 		this.size = 200;
 		this.animAmt = 0;
 		this.period = 10;
+		this.center = {x: 0, y: 0};
 	}
 
-	update(dt) {
+	update(dt, mousePosition) {
 		this.animAmt += dt / this.period;
 		this.animAmt %= 1;
+
+		this.center = mousePosition;
 	}
 
 	/**
@@ -71,6 +74,8 @@ export default class Controller {
 	}
 	
 	adjustPoint(point) {
+		point.x -= this.center.x;
+		point.y -= this.center.y;
 		let r = Math.sqrt(point.x * point.x + point.y * point.y);
 		let theta = Math.atan2(point.y, point.x);
 	
@@ -81,24 +86,13 @@ export default class Controller {
 		else {
 			normalisingFactor = Math.abs(Math.sin(theta));
 		}
-		// Just normalise here
-		let normalisingAnimAmt = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.animAmt);
-		normalisingAnimAmt = easeInOut(normalisingAnimAmt);
 		
-		r *= slurp(normalisingFactor, 1, normalisingAnimAmt);
+		r *= normalisingFactor;
 		let rAmt = r / this.size;
-
-		let spinRAmt = slurp(-1, 1, rAmt) * Math.sin(4 * Math.PI * this.animAmt);
-		let spinAnimAmt = 2 * normalisingAnimAmt;
-		if (spinAnimAmt > 1) {
-			spinAnimAmt = 2 - spinAnimAmt;
-		}
-		let spinAmt = slurp(0, spinRAmt, spinAnimAmt);
-		let spinAngle = 0.1 * Math.PI * spinAmt;
 	
 		return {
-			x: r * Math.cos(theta + spinAngle),
-			y: r * Math.sin(theta + spinAngle),
+			x: r * Math.cos(theta) + this.center.x,
+			y: r * Math.sin(theta) + this.center.y,
 		}
 	}
 }

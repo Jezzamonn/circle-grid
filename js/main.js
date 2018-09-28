@@ -9,6 +9,7 @@ const SIZE = 500;
 let scale = 1;
 let lastTime;
 let controller;
+let mousePosition = {x: 0, y: 0};
 
 function init() {
 	lastTime = Date.now();
@@ -17,6 +18,15 @@ function init() {
 	handleResize();
 	// Set up event listeners.
 	window.addEventListener('resize', handleResize);
+	// We can handle these all the same really.
+	document.addEventListener('mousemove', (evt) => updateMousePosition(evt));
+	document.addEventListener('mousedown', (evt) => updateMousePosition(evt));
+	document.addEventListener('mouseup',   (evt) => updateMousePosition(evt));
+
+	document.addEventListener('touchmove',  (evt) => updateTouchPosition(evt));
+	document.addEventListener('touchstart', (evt) => updateTouchPosition(evt));
+	document.addEventListener('touchend',   (evt) => updateTouchPosition(evt));
+
 	// Kick off the update loop
 	window.requestAnimationFrame(everyFrame);
 }
@@ -31,7 +41,7 @@ function everyFrame() {
 function update() {
 	let curTime = Date.now();
 	let dt = (curTime - lastTime) / 1000;
-	controller.update(dt);
+	controller.update(dt, mousePosition);
 	lastTime = curTime;
 }
 
@@ -63,6 +73,30 @@ function handleResize(evt) {
 	scale = Math.min(canvas.width, canvas.height) / SIZE;
 
 	render();
+}
+
+function updateMousePosition(evt) {
+	mousePosition = screenPointToNormalisedPoint({
+		x: evt.clientX,
+		y: evt.clientY,
+	});
+}
+
+function updateTouchPosition(evt) {
+	if (evt.touches.length > 0) {
+		mousePosition = screenPointToNormalisedPoint({
+			x: evt.touches[0].clientX,
+			y: evt.touches[0].clientY,
+		});
+	}
+}
+
+// scale/translate
+function screenPointToNormalisedPoint(point) {
+	return {
+		x: scale * (point.x - canvas.width / 2),
+		y: scale * (point.y - canvas.height / 2),
+	}
 }
 
 init();
