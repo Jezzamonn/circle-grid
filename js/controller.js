@@ -6,7 +6,7 @@ export default class Controller {
 	constructor() {
 		this.size = 200;
 		this.animAmt = 0;
-		this.period = 7;
+		this.period = 10;
 	}
 
 	update(dt) {
@@ -20,7 +20,7 @@ export default class Controller {
 	render(context) {
 		context.beginPath();
 		context.fillStyle = 'black';
-		const numSquares = 8;
+		const numSquares = 16;
 		const size = this.size;
 		for (let iy = 0; iy < numSquares; iy ++) {
 			const minY = slurp(-size, size, iy / numSquares);
@@ -70,7 +70,6 @@ export default class Controller {
 		context.lineTo(adjusted.x, adjusted.y);
 	}
 	
-	// stolen from https://www.xarg.org/2017/07/how-to-map-a-square-to-a-circle/
 	adjustPoint(point) {
 		let r = Math.sqrt(point.x * point.x + point.y * point.y);
 		let theta = Math.atan2(point.y, point.x);
@@ -83,11 +82,19 @@ export default class Controller {
 			normalisingFactor = Math.abs(Math.sin(theta));
 		}
 		// Just normalise here
-		const someAmt = Math.sin(2 * Math.PI * this.animAmt);
-		r *= slurp(normalisingFactor, 1, someAmt);
+		let normalisingAnimAmt = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.animAmt);
+		normalisingAnimAmt = easeInOut(normalisingAnimAmt);
+		
+		r *= slurp(normalisingFactor, 1, normalisingAnimAmt);
 		let rAmt = r / this.size;
-		let spinAmt = slurp(-1, 1, rAmt) * someAmt;
-		let spinAngle = spinAmt;
+
+		let spinRAmt = slurp(-1, 1, rAmt) * Math.sin(4 * Math.PI * this.animAmt);
+		let spinAnimAmt = 2 * normalisingAnimAmt;
+		if (spinAnimAmt > 1) {
+			spinAnimAmt = 2 - spinAnimAmt;
+		}
+		let spinAmt = slurp(0, spinRAmt, spinAnimAmt);
+		let spinAngle = 0.1 * Math.PI * spinAmt;
 	
 		return {
 			x: r * Math.cos(theta + spinAngle),
