@@ -6,7 +6,7 @@ export default class Controller {
 	constructor() {
 		this.size = 200;
 		this.animAmt = 0;
-		this.period = 10;
+		this.period = 8;
 	}
 
 	update(dt) {
@@ -20,7 +20,7 @@ export default class Controller {
 	render(context) {
 		context.beginPath();
 		context.strokeStyle = 'black';
-		const numSquares = 16;
+		const numSquares = 12;
 		const size = this.size;
 		for (let ix = 0; ix <= numSquares; ix ++) {
 			const x = slurp(-size, size, ix / numSquares);
@@ -89,16 +89,13 @@ export default class Controller {
 		}
 		// Just normalise here
 		let normalisingAnimAmt = 0.5 + 0.5 * Math.sin(2 * Math.PI * this.animAmt);
-		normalisingAnimAmt = easeInOut(normalisingAnimAmt);
+		normalisingAnimAmt = easeInOut(normalisingAnimAmt, 3);
 		
 		r *= slurp(normalisingFactor, 1, normalisingAnimAmt);
 		let rAmt = r / this.size;
 
 		let spinRAmt = slurp(-1, 1, rAmt) * Math.sin(4 * Math.PI * this.animAmt);
-		let spinAnimAmt = 2 * normalisingAnimAmt;
-		if (spinAnimAmt > 1) {
-			spinAnimAmt = 2 - spinAnimAmt;
-		}
+		let spinAnimAmt = 4 * normalisingAnimAmt * (1 - normalisingAnimAmt);
 		let spinAmt = slurp(0, spinRAmt, spinAnimAmt);
 		let spinAngle = 0.1 * Math.PI * spinAmt;
 	
