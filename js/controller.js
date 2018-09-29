@@ -22,24 +22,27 @@ export default class Controller {
 		context.strokeStyle = 'black';
 		const numSquares = 16;
 		const size = this.size;
-		for (let iy = 0; iy < numSquares; iy ++) {
-			const minY = slurp(-size, size, iy / numSquares);
-			const maxY = slurp(-size, size, (iy + 1) / numSquares);
-			for (let ix = 0; ix < numSquares; ix ++) {
-				const minX = slurp(-size, size, ix / numSquares);
-				const maxX = slurp(-size, size, (ix + 1) / numSquares);
-
-				// if ((ix + iy) % 2 == 0) {
-				// 	continue;
-				// }
-
-				this.adjustedPath(context, [
-					{x: minX, y: minY},
-					{x: maxX, y: minY},
-					{x: maxX, y: maxY},
-					{x: minX, y: maxY},
-				]);
-			}
+		for (let ix = 0; ix <= numSquares; ix ++) {
+			const x = slurp(-size, size, ix / numSquares);
+			
+			this.adjustedLine(
+				context,
+				{x: x, y: -size},
+				{x: x, y: size},
+				5 * numSquares,
+				true,
+			)
+		}
+		for (let iy = 0; iy <= numSquares; iy ++) {
+			const y = slurp(-size, size, iy / numSquares);
+			
+			this.adjustedLine(
+				context,
+				{x: -size, y: y},
+				{x: size, y: y},
+				5 * numSquares,
+				true,
+			)
 		}
 		context.stroke();
 	}
@@ -51,7 +54,10 @@ export default class Controller {
 			this.adjustedLine(context, points[i], points[nextI], numPoints)
 		}
 	}
-	adjustedLine(context, start, end, numPoints = 5) {
+	adjustedLine(context, start, end, numPoints = 5, moveAtStart=false) {
+		if (moveAtStart) {
+			this.adjustedMoveTo(context, start.x, start.y);
+		}
 		for (let i = 1; i <= numPoints; i ++) {
 			const amt = i / numPoints;
 			const x = slurp(start.x, end.x, amt);
