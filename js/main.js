@@ -70,7 +70,7 @@ function handleResize(evt) {
 	// Math.max -> no borders (will cut off edges of the thing)
 	// Math.min -> show all (with borders)
 	// There are other options too :)
-	scale = Math.min(canvas.width, canvas.height) / SIZE;
+	scale = Math.max(canvas.width, canvas.height) / SIZE;
 
 	render();
 }
@@ -94,8 +94,8 @@ function updateTouchPosition(evt) {
 // scale/translate
 function screenPointToNormalisedPoint(point) {
 	return {
-		x: scale * (point.x - canvas.width / 2),
-		y: scale * (point.y - canvas.height / 2),
+		x: (point.x - canvas.width  / 2) / scale,
+		y: (point.y - canvas.height / 2) / scale,
 	}
 }
 

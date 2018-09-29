@@ -4,7 +4,7 @@ import { EHOSTUNREACH } from "constants";
 export default class Controller {
 
 	constructor() {
-		this.size = 200;
+		this.size = 500;
 		this.animAmt = 0;
 		this.period = 10;
 		this.center = {x: 0, y: 0};
@@ -22,8 +22,8 @@ export default class Controller {
 	 */
 	render(context) {
 		context.beginPath();
-		context.strokeStyle = 'black';
-		const numSquares = 16;
+		context.fillStyle = 'black';
+		const numSquares = 32;
 		const size = this.size;
 		for (let iy = 0; iy < numSquares; iy ++) {
 			const minY = slurp(-size, size, iy / numSquares);
@@ -32,9 +32,9 @@ export default class Controller {
 				const minX = slurp(-size, size, ix / numSquares);
 				const maxX = slurp(-size, size, (ix + 1) / numSquares);
 
-				// if ((ix + iy) % 2 == 0) {
-				// 	continue;
-				// }
+				if ((ix + iy) % 2 == 0) {
+					continue;
+				}
 
 				this.adjustedPath(context, [
 					{x: minX, y: minY},
@@ -44,7 +44,7 @@ export default class Controller {
 				]);
 			}
 		}
-		context.stroke();
+		context.fill();
 	}
 
 	adjustedPath(context, points, numPoints = 5) {
