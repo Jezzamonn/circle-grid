@@ -17,11 +17,12 @@ function generateDrop(steps=30, ratio=0.5) {
 	}
 	return points;
 }
+const drop = generateDrop();
 
 export default class Controller {
 
 	constructor() {
-		this.size = 200;
+		this.size = 500;
 		this.animAmt = 0;
 		this.period = 8;
 	}
@@ -35,59 +36,26 @@ export default class Controller {
 	 * @param {CanvasRenderingContext2D} context 
 	 */
 	render(context) {
-		const thingo = generateDrop();
-		context.beginPath();
-		context.strokeStyle = 'black';
-		thingo
-			.map(p => ({x: 100 * p.x, y: 100 * p.y}))
-			.forEach((point, i) => {
-				if (i == 0) {
-					context.moveTo(point.x, point.y);
-				}
-				else {
-					context.lineTo(point.x, point.y);
-				}
-			});
-		context.closePath();
-		context.stroke();
-		return;
-
-		// context.beginPath();
-		// context.strokeStyle = 'black';
-		// const numSquares = 12;
-		// const size = this.size;
-		// for (let ix = 0; ix <= numSquares; ix ++) {
-		// 	for (let iy = 0; iy <= numSquares; iy ++) {
-		// 		adjustedPath(
-		// 			context,
-		// 			drop.map(p => {
-		// 				return {
-		// 					x: p.x + ix,
-		// 					y: p.y + iy
-		// 				}
-		// 			})
-		// 		);
-		// 	}
-			
-		// 	this.adjustedLine(
-		// 		context,
-		// 		{x: x, y: -size},
-		// 		{x: x, y: size},
-		// 		5 * numSquares,
-		// 		true,
-		// 	)
-		// }
-		// 	const y = slurp(-size, size, iy / numSquares);
-			
-		// 	this.adjustedLine(
-		// 		context,
-		// 		{x: -size, y: y},
-		// 		{x: size, y: y},
-		// 		5 * numSquares,
-		// 		true,
-		// 	)
-		// }
-		// context.stroke();
+		const numDrops = 16;
+		const size = this.size;
+		for (let ix = 0; ix <= numDrops; ix ++) {
+			let x = slurp(-size, size, ix / numDrops);
+			for (let iy = 0; iy <= numDrops; iy ++) {
+				let y = slurp(-size, size, iy / numDrops);
+				context.beginPath();
+				context.strokeStyle = 'black';
+				this.adjustedPath(
+					context,
+					drop.map(p => {
+						return {
+							x: 100 * p.x + x,
+							y: 100 * p.y + y
+						}
+					})
+				);
+				context.stroke();
+			}
+		}
 	}
 
 	adjustedPath(context, points, numPoints = 5) {
