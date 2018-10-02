@@ -38,12 +38,12 @@ export default class Controller {
 	render(context) {
 		const numDrops = 16;
 		const size = this.size;
+		context.beginPath();
+		context.fillStyle = 'black';
 		for (let ix = 0; ix <= numDrops; ix ++) {
 			let x = slurp(-size, size, ix / numDrops);
 			for (let iy = 0; iy <= numDrops; iy ++) {
 				let y = slurp(-size, size, iy / numDrops);
-				context.beginPath();
-				context.strokeStyle = 'black';
 				this.adjustedPath(
 					context,
 					drop.map(p => {
@@ -53,9 +53,9 @@ export default class Controller {
 						}
 					})
 				);
-				context.stroke();
 			}
 		}
+		context.fill('evenodd');
 	}
 
 	adjustedPath(context, points, numPoints = 5) {
