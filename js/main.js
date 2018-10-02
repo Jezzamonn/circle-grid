@@ -60,7 +60,7 @@ function handleResize(evt) {
 	// Math.max -> no borders (will cut off edges of the thing)
 	// Math.min -> show all (with borders)
 	// There are other options too :)
-	scale = Math.min(canvas.width, canvas.height) / SIZE;
+	scale = Math.max(canvas.width, canvas.height) / SIZE;
 
 	render();
 }

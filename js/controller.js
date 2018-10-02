@@ -23,7 +23,7 @@ export default class Controller {
 
 	constructor() {
 		this.animAmt = 0;
-		this.period = 8;
+		this.period = 2;
 	}
 
 	update(dt) {
@@ -35,15 +35,16 @@ export default class Controller {
 	 * @param {CanvasRenderingContext2D} context 
 	 */
 	render(context) {
-		const size = 500;
-		const numDrops = 16;
+		const size = 400;
+		const numDrops = 17;
 		const dropSize = size / numDrops;
 		context.beginPath();
 		context.fillStyle = 'black';
 		for (let ix = 0; ix <= numDrops; ix ++) {
 			let x = slurp(-size, size, ix / numDrops);
 			for (let iy = 0; iy <= numDrops; iy ++) {
-				let y = slurp(-size, size, iy / numDrops);
+				let yAmt = (iy + this.animAmt) / numDrops;
+				let y = slurp(-size, size, yAmt);
 				this.adjustedPath(
 					context,
 					drop.map(p => {
