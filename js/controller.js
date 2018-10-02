@@ -22,7 +22,6 @@ const drop = generateDrop();
 export default class Controller {
 
 	constructor() {
-		this.size = 500;
 		this.animAmt = 0;
 		this.period = 8;
 	}
@@ -36,8 +35,9 @@ export default class Controller {
 	 * @param {CanvasRenderingContext2D} context 
 	 */
 	render(context) {
+		const size = 500;
 		const numDrops = 16;
-		const size = this.size;
+		const dropSize = size / numDrops;
 		context.beginPath();
 		context.fillStyle = 'black';
 		for (let ix = 0; ix <= numDrops; ix ++) {
@@ -48,14 +48,14 @@ export default class Controller {
 					context,
 					drop.map(p => {
 						return {
-							x: 100 * p.x + x,
-							y: 100 * p.y + y
+							x: dropSize * p.x + x,
+							y: dropSize * p.y + y
 						}
 					})
 				);
 			}
 		}
-		context.fill('evenodd');
+		context.fill();
 	}
 
 	adjustedPath(context, points, numPoints = 5) {
