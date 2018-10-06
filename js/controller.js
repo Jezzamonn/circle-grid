@@ -4,7 +4,7 @@ import { EHOSTUNREACH } from "constants";
 export default class Controller {
 
 	constructor() {
-		this.size = 500;
+		this.squareSize = 15;
 		this.animAmt = 0;
 		this.period = 10;
 		this.center = {x: 0, y: 0};
@@ -14,7 +14,37 @@ export default class Controller {
 		this.animAmt += dt / this.period;
 		this.animAmt %= 1;
 
-		this.center = mousePosition;
+		const states = 4;
+		const state = Math.floor(states * this.animAmt);
+		let stateAnim = (states * this.animAmt) % 1;
+		stateAnim = easeInOut(stateAnim, 3);
+		const distance = 4 * this.squareSize;
+		switch (state) {
+			case 0:
+				this.center = {
+					x: slurp(-distance, distance, stateAnim),
+					y: -distance
+				}
+				break;
+			case 1:
+				this.center = {
+					x: distance,
+					y: slurp(-distance, distance, stateAnim)
+				}
+				break;
+			case 2:
+				this.center = {
+					x: slurp(distance, -distance, stateAnim),
+					y: distance
+				}
+				break;
+			case 3:
+				this.center = {
+					x: -distance,
+					y: slurp(distance, -distance, stateAnim)
+				}
+				break;
+		}
 	}
 
 	/**
@@ -24,7 +54,7 @@ export default class Controller {
 		context.beginPath();
 		context.fillStyle = 'black';
 		const numSquares = 32;
-		const size = this.size;
+		const size = this.squareSize * numSquares;
 		for (let iy = 0; iy < numSquares; iy ++) {
 			const minY = slurp(-size, size, iy / numSquares);
 			const maxY = slurp(-size, size, (iy + 1) / numSquares);
