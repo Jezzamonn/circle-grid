@@ -93,9 +93,10 @@ function updateTouchPosition(evt) {
 
 // scale/translate
 function screenPointToNormalisedPoint(point) {
+	let pixelRatio = window.devicePixelRatio || 1;
 	return {
-		x: (point.x - canvas.width  / 2) / scale,
-		y: (point.y - canvas.height / 2) / scale,
+		x: (pixelRatio * point.x - canvas.width  / 2) / scale,
+		y: (pixelRatio * point.y - canvas.height / 2) / scale,
 	}
 }
 
