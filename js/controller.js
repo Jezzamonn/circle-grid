@@ -6,7 +6,7 @@ export default class Controller {
 	constructor() {
 		this.squareSize = 20;
 		this.animAmt = 0;
-		this.period = 10;
+		this.period = 8;
 		this.center = {x: 0, y: 0};
 	}
 
@@ -17,7 +17,7 @@ export default class Controller {
 		const states = 4;
 		const state = Math.floor(states * this.animAmt);
 		let stateAnim = (states * this.animAmt) % 1;
-		stateAnim = easeInOut(stateAnim, 3);
+		stateAnim = easeInOut(stateAnim, 4);
 		const distance = 4 * this.squareSize;
 		switch (state) {
 			case 0:
