@@ -4,7 +4,7 @@ import { EHOSTUNREACH } from "constants";
 export default class Controller {
 
 	constructor() {
-		this.squareSize = 15;
+		this.squareSize = 20;
 		this.animAmt = 0;
 		this.period = 10;
 		this.center = {x: 0, y: 0};
