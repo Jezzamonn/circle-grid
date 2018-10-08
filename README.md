@@ -1,7 +1,7 @@
 # Circle Grid
 A bunch of code-art things around the concept of mapping squares to circles
 
-There's three creations here that all come from the same source code. The code for each are on different branches.
+There's three creations here that all come from the same source code. The code for each are on different branches. For all of them, the code file doing all the rendering is js/controller.js.
 
 This uses my [es6-base](https://github.com/Jezzamonn/es6-base) project as the base
 
